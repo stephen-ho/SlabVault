@@ -4,7 +4,7 @@ function CardInfo({cardInfo}) {
 
   for (const description in cardInfo) {
     const newRow = (
-      <div>
+      <div key={description}>
         {description}: {cardInfo[description]}
       </div>
     );
