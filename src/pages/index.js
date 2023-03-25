@@ -12,9 +12,10 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
 
   const [cardInfo, setCardInfo] = useState({});
+  const [certNum, setCertNum] = useState("");
 
   function fetchInfo() {
-    axios.get('/api/proxy')
+    axios.get(`/api/proxy?certNum=${certNum}`)
     .then((response) => {
       const $ = load(response.data)
       const cardData = $('tr');
@@ -29,6 +30,10 @@ export default function Home() {
     })
   }
 
+  function handleChange(e) {
+    setCertNum(e.target.value);
+  }
+
   return (
     <>
       <Head>
@@ -41,7 +46,11 @@ export default function Home() {
         <div className="header">
           <h1>SlabVault</h1>
         </div>
-        <div>
+        <div className="cardInput">
+          <form>
+            <label>Certification #:</label>
+            <input type="text" name="certNo" value={certNum} onChange={handleChange}/>
+          </form>
           <button onClick={fetchInfo}>Click Me!</button>
         </div>
         <CardInfo cardInfo={cardInfo} />
