@@ -5,7 +5,7 @@ import styles from '@/styles/Home.module.css'
 import axios from "axios";
 import { load } from "cheerio";
 import { useState } from "react";
-// import CardInfo from "./CardInfo";
+import CardInfo from "./CardInfo";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,17 +29,6 @@ export default function Home() {
     })
   }
 
-  const fullCardInfo = [];
-
-  for (const description in cardInfo) {
-    const newRow = (
-      <div>
-        {description}: {cardInfo[description]}
-      </div>
-    );
-    fullCardInfo.push(newRow);
-  }
-
   return (
     <>
       <Head>
@@ -55,9 +44,7 @@ export default function Home() {
         <div>
           <button onClick={fetchInfo}>Click Me!</button>
         </div>
-        <div className="cardInfo">
-          {fullCardInfo}
-        </div>
+        <CardInfo cardInfo={cardInfo} />
       </main>
     </>
   )
