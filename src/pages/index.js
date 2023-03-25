@@ -13,26 +13,35 @@ export default function Home() {
 
   const [cardInfo, setCardInfo] = useState({});
   const [certNum, setCertNum] = useState("");
+  const [isCardInfo, setIsCardInfo] = useState(true);
 
   function fetchInfo() {
     axios.get(`/api/proxy?certNum=${certNum}`)
     .then((response) => {
-      const $ = load(response.data)
-      const cardData = $('tr');
-      const data = {};
-      for (let i = 0; i < cardData.length; i++) {
-        const currentRow = cardData.eq(i);
-        const header = currentRow.find('th').text();
-        const value = currentRow.find('td').text();
-        data[header] = value;
+      const $ = load(response.data);
+      const alert = $('.glyphicon-alert');
+      if (alert.length > 0) {
+        setIsCardInfo(false);
+      } else {
+        const cardData = $('tr');
+        const data = {};
+        for (let i = 0; i < cardData.length; i++) {
+          const currentRow = cardData.eq(i);
+          const header = currentRow.find('th').text();
+          const value = currentRow.find('td').text();
+          data[header] = value;
+        }
+        setCardInfo(data);
+        setIsCardInfo(true);
       }
-      setCardInfo(data);
-    })
+    });
   }
 
   function handleChange(e) {
     setCertNum(e.target.value);
   }
+
+  const cardContent = isCardInfo ? (<CardInfo cardInfo={cardInfo} />) : (<div>Invalid Certification Number</div>);
 
   return (
     <>
@@ -53,7 +62,7 @@ export default function Home() {
           </form>
           <button onClick={fetchInfo}>Click Me!</button>
         </div>
-        <CardInfo cardInfo={cardInfo} />
+        {cardContent}
       </main>
     </>
   )
