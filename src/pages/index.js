@@ -57,6 +57,11 @@ export default function Home() {
         </div>
         <div className="cardInput">
           <form>
+            <select>
+              <option value="PSA">PSA</option>
+              <option value="CGC">CGC</option>
+              <option value="BGS">BGS</option>
+            </select>
             <label>Certification #:</label>
             <input type="text" name="certNo" value={certNum} onChange={handleChange}/>
           </form>
