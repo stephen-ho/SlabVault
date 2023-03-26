@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 export default function handler(req, res) {
+  const company = req.query.company;
   const certNum = req.query.certNum;
 
   axios({

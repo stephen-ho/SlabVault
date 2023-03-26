@@ -14,9 +14,10 @@ export default function Home() {
   const [cardInfo, setCardInfo] = useState({});
   const [certNum, setCertNum] = useState("");
   const [isCardInfo, setIsCardInfo] = useState(true);
+  const [company, setCompany] = useState("PSA");
 
   function fetchInfo() {
-    axios.get(`/api/proxy?certNum=${certNum}`)
+    axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
     .then((response) => {
       const $ = load(response.data);
       const alert = $('.glyphicon-alert');
@@ -41,6 +42,10 @@ export default function Home() {
     setCertNum(e.target.value);
   }
 
+  function handleCompany(e) {
+    setCompany(e.target.value);
+  }
+
   const cardContent = isCardInfo ? (<CardInfo cardInfo={cardInfo} />) : (<div>Invalid Certification Number</div>);
 
   return (
@@ -57,7 +62,7 @@ export default function Home() {
         </div>
         <div className="cardInput">
           <form>
-            <select>
+            <select onChange={handleCompany}>
               <option value="PSA">PSA</option>
               <option value="CGC">CGC</option>
               <option value="BGS">BGS</option>
