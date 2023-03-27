@@ -16,7 +16,7 @@ export default function Home() {
   const [isCardInfo, setIsCardInfo] = useState(true);
   const [company, setCompany] = useState("PSA");
 
-  function fetchInfo() {
+  function fetchPSA() {
     axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
     .then((response) => {
       const $ = load(response.data);
@@ -36,6 +36,33 @@ export default function Home() {
         setIsCardInfo(true);
       }
     });
+  }
+
+  function fetchInfo() {
+    if (company === "PSA") {
+      fetchPSA();
+    } else if (company === "CGC") {
+      console.log("CGC")
+    }
+    // axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
+    // .then((response) => {
+    //   const $ = load(response.data);
+    //   const alert = $('.glyphicon-alert');
+    //   if (alert.length > 0) {
+    //     setIsCardInfo(false);
+    //   } else {
+    //     const cardData = $('tr');
+    //     const data = {};
+    //     for (let i = 0; i < cardData.length; i++) {
+    //       const currentRow = cardData.eq(i);
+    //       const header = currentRow.find('th').text();
+    //       const value = currentRow.find('td').text();
+    //       data[header] = value;
+    //     }
+    //     setCardInfo(data);
+    //     setIsCardInfo(true);
+    //   }
+    // });
   }
 
   function handleChange(e) {
