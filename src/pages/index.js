@@ -59,31 +59,37 @@ export default function Home() {
     });
   }
 
+  function fetchBGS() {
+    axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
+    .then((response) => {
+      const $ = load(response.data);
+      const alert = $('.recNotF');
+      if (alert.length > 0) {
+        setIsCardInfo(false);
+      } else {
+        const cardData = $('.cardDetail').eq(0).find('tr');
+        const data = {};
+        data["Card Serial Number"] = certNum;
+        for (let i = 0; i < cardData.length; i++) {
+          const currentRow = cardData.eq(i);
+          const header = currentRow.find('b').text();
+          const value = currentRow.find('td').eq(2).text();
+          data[header] = value;
+        }
+        setCardInfo(data);
+        setIsCardInfo(true);
+      }
+    });
+  }
+
   function fetchInfo() {
     if (company === "PSA") {
       fetchPSA();
     } else if (company === "CGC") {
       fetchCGC();
+    } else {
+      fetchBGS();
     }
-    // axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
-    // .then((response) => {
-    //   const $ = load(response.data);
-    //   const alert = $('.glyphicon-alert');
-    //   if (alert.length > 0) {
-    //     setIsCardInfo(false);
-    //   } else {
-    //     const cardData = $('tr');
-    //     const data = {};
-    //     for (let i = 0; i < cardData.length; i++) {
-    //       const currentRow = cardData.eq(i);
-    //       const header = currentRow.find('th').text();
-    //       const value = currentRow.find('td').text();
-    //       data[header] = value;
-    //     }
-    //     setCardInfo(data);
-    //     setIsCardInfo(true);
-    //   }
-    // });
   }
 
   function handleChange(e) {
