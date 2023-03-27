@@ -20,49 +20,20 @@ export default function Home() {
     axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
     .then((response) => {
       const $ = load(response.data);
-      if (company === "PSA") {
-        const alert = $('.glyphicon-alert');
-        if (alert.length > 0) {
-          setIsCardInfo(false);
-        } else {
-          const cardData = $('tr');
-          const data = {};
-          for (let i = 0; i < cardData.length; i++) {
-            const currentRow = cardData.eq(i);
-            const header = currentRow.find('th').text();
-            const value = currentRow.find('td').text();
-            data[header] = value;
-          }
-          setCardInfo(data);
-          setIsCardInfo(true);
-        }
-      } else if (company === "CGC") {
-        const cardData = $('dl');
-        if (cardData.length === 0) {
-          setIsCardInfo(false);
-        } else {
-          const data = {};
-          for (let i = 0; i < cardData.length; i++) {
-            const currentRow = cardData.eq(i);
-            const header = currentRow.find('dt').text();
-            const value = currentRow.find('dd').text();
-            data[header] = value;
-          }
-          setCardInfo(data);
-          setIsCardInfo(true);
-        }
+      const alert = $('.glyphicon-alert');
+      if (alert.length > 0) {
+        setIsCardInfo(false);
       } else {
-        const cardData = $('.cardDetail').eq(0).find('tr');
+        const cardData = $('tr');
         const data = {};
-        console.log(cardData);
-        // for (let i = 0; i < cardData.length; i++) {
-        //   const currentRow = cardData.eq(i);
-        //   const header = currentRow.find('td').eq(0).text();
-        //   const value = currentRow.find('td').eq(2).text();
-        //   data[header] = value;
-        // }
-        // setCardInfo(data);
-        // setIsCardInfo(true);
+        for (let i = 0; i < cardData.length; i++) {
+          const currentRow = cardData.eq(i);
+          const header = currentRow.find('th').text();
+          const value = currentRow.find('td').text();
+          data[header] = value;
+        }
+        setCardInfo(data);
+        setIsCardInfo(true);
       }
     });
   }
