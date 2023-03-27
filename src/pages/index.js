@@ -38,11 +38,32 @@ export default function Home() {
     });
   }
 
+  function fetchCGC() {
+    axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
+    .then((response) => {
+      const $ = load(response.data);
+      const cardData = $('dl');
+      if (cardData.length === 0) {
+        setIsCardInfo(false);
+      } else {
+        const data = {};
+        for (let i = 0; i < cardData.length; i++) {
+          const currentRow = cardData.eq(i);
+          const header = currentRow.find('dt').text();
+          const value = currentRow.find('dd').text();
+          data[header] = value;
+        }
+        setCardInfo(data);
+        setIsCardInfo(true);
+      }
+    });
+  }
+
   function fetchInfo() {
     if (company === "PSA") {
       fetchPSA();
     } else if (company === "CGC") {
-      console.log("CGC")
+      fetchCGC();
     }
     // axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
     // .then((response) => {
