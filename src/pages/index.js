@@ -16,6 +16,14 @@ export default function Home() {
   const [isCardInfo, setIsCardInfo] = useState(true);
   const [company, setCompany] = useState("PSA");
 
+  const companies = ['PSA', 'CGC', 'BGS'];
+
+  const companyOptionElements = companies.map((company) => {
+    return (
+      <option key={company} value={company}>{company}</option>
+    );
+  });
+
   function fetchPSA() {
     axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
     .then((response) => {
@@ -117,9 +125,7 @@ export default function Home() {
         <div className="cardInput">
           <form>
             <select className="form-select" onChange={handleCompany}>
-              <option value="PSA">PSA</option>
-              <option value="CGC">CGC</option>
-              <option value="BGS">BGS</option>
+              {companyOptionElements}
             </select>
             <input
               className="form-control"
