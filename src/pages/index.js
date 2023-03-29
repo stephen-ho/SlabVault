@@ -100,6 +100,8 @@ export default function Home() {
     } else {
       fetchBGS();
     }
+    setSearched((searched) => [...searched, cardInfo]);
+    console.log(searched);
   }
 
   function handleChange(e) {
@@ -142,26 +144,6 @@ export default function Home() {
         </div>
         {cardContent}
         <Table cardInfo={cardInfo} company={company} />
-        {/* <div className="prevSearched">
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Certification #</th>
-                <th scope="col">Set Name</th>
-                <th scope="col">Card Name</th>
-                <th scope="col">Grade</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{cardInfo['Certification Number']}</td>
-                <td>{cardInfo['Brand']}</td>
-                <td>{cardInfo['Player']}</td>
-                <td>{cardInfo['Grade']}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div> */}
       </main>
     </>
   )

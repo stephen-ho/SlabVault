@@ -4,9 +4,7 @@ function Table({ cardInfo, company }) {
 
   if (company === "CGC") {
     infoKeys = ['Cert #', 'Card Set', 'Card Name', 'Grade'];
-  }
-
-  if (company === "BGS") {
+  } else if (company === "BGS") {
     infoKeys = ['Card Serial Number', 'Set Name', 'Player Name', 'Final Grade'];
   }
 
