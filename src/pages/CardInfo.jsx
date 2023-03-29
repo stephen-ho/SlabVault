@@ -15,7 +15,7 @@ function CardInfo({cardInfo}) {
     <div className="cardInfo">
       {fullCardInfo}
     </div>
-  )
+  );
 }
 
 export default CardInfo;
