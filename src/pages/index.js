@@ -6,6 +6,7 @@ import axios from "axios";
 import { load } from "cheerio";
 import { useState } from "react";
 import CardInfo from "./CardInfo";
+import Table from "./Table";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -140,7 +141,8 @@ export default function Home() {
           <button className="btn btn-primary" onClick={fetchInfo}>Click Me!</button>
         </div>
         {cardContent}
-        <div className="prevSearched">
+        <Table cardInfo={cardInfo} company={company} />
+        {/* <div className="prevSearched">
           <table className="table">
             <thead>
               <tr>
@@ -152,14 +154,14 @@ export default function Home() {
             </thead>
             <tbody>
               <tr>
-                <th scope="row">{cardInfo['Certification Number']}</th>
+                <td>{cardInfo['Certification Number']}</td>
                 <td>{cardInfo['Brand']}</td>
                 <td>{cardInfo['Player']}</td>
                 <td>{cardInfo['Grade']}</td>
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> */}
       </main>
     </>
   )
