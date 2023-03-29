@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import axios from "axios";
 import { load } from "cheerio";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardInfo from "./CardInfo";
 import Table from "./Table";
 
@@ -26,6 +26,10 @@ export default function Home() {
     );
   });
 
+  useEffect(() => {
+    console.log(searched);
+  }, [searched])
+
   function fetchPSA() {
     axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
     .then((response) => {
@@ -44,6 +48,7 @@ export default function Home() {
         }
         setCardInfo(data);
         setIsCardInfo(true);
+        setSearched((searched) => [...searched, data]);
       }
     });
   }
@@ -65,6 +70,7 @@ export default function Home() {
         }
         setCardInfo(data);
         setIsCardInfo(true);
+        setSearched((searched) => [...searched, data]);
       }
     });
   }
@@ -88,6 +94,7 @@ export default function Home() {
         }
         setCardInfo(data);
         setIsCardInfo(true);
+        setSearched((searched) => [...searched, data]);
       }
     });
   }
@@ -142,26 +149,6 @@ export default function Home() {
         </div>
         {cardContent}
         <Table cardInfo={cardInfo} company={company} />
-        {/* <div className="prevSearched">
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Certification #</th>
-                <th scope="col">Set Name</th>
-                <th scope="col">Card Name</th>
-                <th scope="col">Grade</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{cardInfo['Certification Number']}</td>
-                <td>{cardInfo['Brand']}</td>
-                <td>{cardInfo['Player']}</td>
-                <td>{cardInfo['Grade']}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div> */}
       </main>
     </>
   )
