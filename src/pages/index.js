@@ -15,6 +15,7 @@ export default function Home() {
   const [certNum, setCertNum] = useState("");
   const [isCardInfo, setIsCardInfo] = useState(true);
   const [company, setCompany] = useState("PSA");
+  const [searched, setSearched] = useState([]);
 
   const companies = ['PSA', 'CGC', 'BGS'];
 
@@ -139,6 +140,26 @@ export default function Home() {
           <button className="btn btn-primary" onClick={fetchInfo}>Click Me!</button>
         </div>
         {cardContent}
+        <div className="prevSearched">
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Certification #</th>
+                <th scope="col">Set Name</th>
+                <th scope="col">Card Name</th>
+                <th scope="col">Grade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">{cardInfo['Certification Number']}</th>
+                <td>{cardInfo['Brand']}</td>
+                <td>{cardInfo['Player']}</td>
+                <td>{cardInfo['Grade']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </main>
     </>
   )
