@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import axios from "axios";
 import { load } from "cheerio";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardInfo from "./CardInfo";
 import Table from "./Table";
 
@@ -26,6 +26,10 @@ export default function Home() {
     );
   });
 
+  useEffect(() => {
+    console.log(searched);
+  }, [searched])
+
   function fetchPSA() {
     axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
     .then((response) => {
@@ -44,6 +48,7 @@ export default function Home() {
         }
         setCardInfo(data);
         setIsCardInfo(true);
+        setSearched((searched) => [...searched, data]);
       }
     });
   }
@@ -65,6 +70,7 @@ export default function Home() {
         }
         setCardInfo(data);
         setIsCardInfo(true);
+        setSearched((searched) => [...searched, data]);
       }
     });
   }
@@ -88,6 +94,7 @@ export default function Home() {
         }
         setCardInfo(data);
         setIsCardInfo(true);
+        setSearched((searched) => [...searched, data]);
       }
     });
   }
@@ -100,8 +107,6 @@ export default function Home() {
     } else {
       fetchBGS();
     }
-    setSearched((searched) => [...searched, cardInfo]);
-    console.log(searched);
   }
 
   function handleChange(e) {
