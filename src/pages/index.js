@@ -45,6 +45,7 @@ export default function Home() {
           const header = currentRow.find('th').text();
           const value = currentRow.find('td').text();
           data[header] = value;
+          data["Grading Company"] = company;
         }
         setCardInfo(data);
         setIsCardInfo(true);
@@ -67,6 +68,7 @@ export default function Home() {
           const header = currentRow.find('dt').text();
           const value = currentRow.find('dd').text();
           data[header] = value;
+          data["Grading Company"] = company;
         }
         setCardInfo(data);
         setIsCardInfo(true);
@@ -91,6 +93,7 @@ export default function Home() {
           const header = currentRow.find('b').text();
           const value = currentRow.find('td').eq(2).text();
           data[header] = value;
+          data["Grading Company"] = company;
         }
         setCardInfo(data);
         setIsCardInfo(true);
@@ -148,7 +151,7 @@ export default function Home() {
           <button className="btn btn-primary" onClick={fetchInfo}>Click Me!</button>
         </div>
         {cardContent}
-        <Table cardInfo={cardInfo} company={company} />
+        <Table company={company} searched={searched} />
       </main>
     </>
   )

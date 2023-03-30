@@ -1,15 +1,24 @@
-function Table({ cardInfo, company }) {
+function Table({ company, searched }) {
 
-  let infoKeys = ['Certification Number', 'Brand', 'Player', 'Grade'];
+  const searchedData = searched.map((card, index) => {
 
-  if (company === "CGC") {
-    infoKeys = ['Cert #', 'Card Set', 'Card Name', 'Grade'];
-  } else if (company === "BGS") {
-    infoKeys = ['Card Serial Number', 'Set Name', 'Player Name', 'Final Grade'];
-  }
+    let infoKeys = ['Grading Company', 'Certification Number', 'Brand', 'Player', 'Grade'];
 
-  const tableData = infoKeys.map((key, index) => {
-    return (<td key={index}>{cardInfo[key]}</td>);
+    if (card["Grading Company"] === "CGC") {
+      infoKeys = ['Grading Company', 'Cert #', 'Card Set', 'Card Name', 'Grade'];
+    } else if (card["Grading Company"] === "BGS") {
+      infoKeys = ['Grading Company', 'Card Serial Number', 'Set Name', 'Player Name', 'Final Grade'];
+    }
+
+    const tableData = infoKeys.map((key, index) => {
+      return (<td key={index}>{card[key]}</td>);
+    });
+
+    return (
+      <tr key={index}>
+        {tableData}
+      </tr>
+    );
   });
 
   return (
@@ -17,6 +26,7 @@ function Table({ cardInfo, company }) {
       <table className="table">
         <thead>
           <tr>
+            <th scope="col">Company</th>
             <th scope="col">Certification #</th>
             <th scope="col">Set Name</th>
             <th scope="col">Card Name</th>
@@ -24,9 +34,7 @@ function Table({ cardInfo, company }) {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            {tableData}
-          </tr>
+          {searchedData}
         </tbody>
       </table>
     </div>
