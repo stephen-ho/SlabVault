@@ -151,7 +151,7 @@ export default function Home() {
           <button className="btn btn-primary" onClick={fetchInfo}>Click Me!</button>
         </div>
         {cardContent}
-        <Table cardInfo={cardInfo} company={company} searched={searched} />
+        <Table company={company} searched={searched} />
       </main>
     </>
   )

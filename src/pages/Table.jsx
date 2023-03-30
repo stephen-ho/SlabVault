@@ -1,4 +1,4 @@
-function Table({ cardInfo, company, searched }) {
+function Table({ company, searched }) {
 
   const searchedData = searched.map((card, index) => {
 
