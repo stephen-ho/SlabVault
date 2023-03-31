@@ -1,4 +1,8 @@
+import { useRouter } from "next/router";
+
 function Table({ company, searched }) {
+
+  const router = useRouter();
 
   const searchedData = searched.map((card, index) => {
 
@@ -15,7 +19,7 @@ function Table({ company, searched }) {
     });
 
     return (
-      <tr key={index}>
+      <tr key={index} onClick={() => router.push("/details")}>
         {tableData}
       </tr>
     );
@@ -23,7 +27,7 @@ function Table({ company, searched }) {
 
   return (
     <div className="prevSearched">
-      <table className="table">
+      <table className="table table-striped">
         <thead>
           <tr>
             <th scope="col">Company</th>
