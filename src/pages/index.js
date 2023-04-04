@@ -52,106 +52,55 @@ export default function Home() {
         return false;
       }
     }
+    if (company === "CGC") {
+    const cardData = $('dl');
+      if (cardData.length === 0) {
+        return false;
+      }
+    }
+    if (company === "BGS") {
+      const alert = $('.recNotF');
+      if (alert.length > 0) {
+        return false;
+      }
+    }
     return true;
   }
 
   function parseCardInfo(response, company) {
     const $ = load(response.data);
+    const data = {};
     if (company === "PSA") {
       const cardData = $('tr');
-      const data = {};
       for (let i = 0; i < cardData.length; i++) {
         const currentRow = cardData.eq(i);
         const header = currentRow.find('th').text();
         const value = currentRow.find('td').text();
         data[header] = value;
-        data["Grading Company"] = company;
       }
-      return data;
     }
-  }
-
-  // function fetchPSA() {
-  //   axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
-  //   .then((response) => {
-  //     const $ = load(response.data);
-  //     const alert = $('.glyphicon-alert');
-  //     if (alert.length > 0) {
-  //       setIsCardInfo(false);
-  //     } else {
-  //       const cardData = $('tr');
-  //       const data = {};
-  //       for (let i = 0; i < cardData.length; i++) {
-  //         const currentRow = cardData.eq(i);
-  //         const header = currentRow.find('th').text();
-  //         const value = currentRow.find('td').text();
-  //         data[header] = value;
-  //         data["Grading Company"] = company;
-  //       }
-  //       setCardInfo(data);
-  //       setIsCardInfo(true);
-  //       setSearched((searched) => [...searched, data]);
-  //     }
-  //   });
-  // }
-
-  function fetchCGC() {
-    axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
-    .then((response) => {
-      const $ = load(response.data);
+    if (company === "CGC") {
       const cardData = $('dl');
-      if (cardData.length === 0) {
-        setIsCardInfo(false);
-      } else {
-        const data = {};
-        for (let i = 0; i < cardData.length; i++) {
-          const currentRow = cardData.eq(i);
-          const header = currentRow.find('dt').text();
-          const value = currentRow.find('dd').text();
-          data[header] = value;
-          data["Grading Company"] = company;
-        }
-        setCardInfo(data);
-        setIsCardInfo(true);
-        setSearched((searched) => [...searched, data]);
+      for (let i = 0; i < cardData.length; i++) {
+        const currentRow = cardData.eq(i);
+        const header = currentRow.find('dt').text();
+        const value = currentRow.find('dd').text();
+        data[header] = value;
       }
-    });
-  }
-
-  function fetchBGS() {
-    axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
-    .then((response) => {
-      const $ = load(response.data);
-      const alert = $('.recNotF');
-      if (alert.length > 0) {
-        setIsCardInfo(false);
-      } else {
-        const cardData = $('.cardDetail').eq(0).find('tr');
-        const data = {};
-        data["Card Serial Number"] = certNum;
-        for (let i = 0; i < cardData.length; i++) {
-          const currentRow = cardData.eq(i);
-          const header = currentRow.find('b').text();
-          const value = currentRow.find('td').eq(2).text();
-          data[header] = value;
-          data["Grading Company"] = company;
-        }
-        setCardInfo(data);
-        setIsCardInfo(true);
-        setSearched((searched) => [...searched, data]);
+    }
+    if (company === "BGS") {
+      const cardData = $('.cardDetail').eq(0).find('tr');
+      data["Card Serial Number"] = certNum;
+      for (let i = 0; i < cardData.length; i++) {
+        const currentRow = cardData.eq(i);
+        const header = currentRow.find('b').text();
+        const value = currentRow.find('td').eq(2).text();
+        data[header] = value;
       }
-    });
+    }
+    data["Grading Company"] = company;
+    return data;
   }
-
-  // function fetchInfo() {
-  //   if (company === "PSA") {
-  //     fetchPSA();
-  //   } else if (company === "CGC") {
-  //     fetchCGC();
-  //   } else {
-  //     fetchBGS();
-  //   }
-  // }
 
   function handleChange(e) {
     setCertNum(e.target.value);
