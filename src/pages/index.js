@@ -30,86 +30,76 @@ export default function Home() {
     console.log(searched);
   }, [searched])
 
-  function fetchPSA() {
+  function fetchCardInfo() {
     axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
     .then((response) => {
-      const $ = load(response.data);
+      const isValid = validateResponse(response, company);
+      setIsCardInfo(isValid);
+
+      if (isValid) {
+        const data = parseCardInfo(response, company);
+        setCardInfo(data);
+        setSearched((searched) => [...searched, data]);
+      }
+    });
+  }
+
+  function validateResponse(response, company) {
+    const $ = load(response.data);
+    if (company === "PSA") {
       const alert = $('.glyphicon-alert');
       if (alert.length > 0) {
-        setIsCardInfo(false);
-      } else {
-        const cardData = $('tr');
-        const data = {};
-        for (let i = 0; i < cardData.length; i++) {
-          const currentRow = cardData.eq(i);
-          const header = currentRow.find('th').text();
-          const value = currentRow.find('td').text();
-          data[header] = value;
-          data["Grading Company"] = company;
-        }
-        setCardInfo(data);
-        setIsCardInfo(true);
-        setSearched((searched) => [...searched, data]);
+        return false;
       }
-    });
-  }
-
-  function fetchCGC() {
-    axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
-    .then((response) => {
-      const $ = load(response.data);
-      const cardData = $('dl');
+    }
+    if (company === "CGC") {
+    const cardData = $('dl');
       if (cardData.length === 0) {
-        setIsCardInfo(false);
-      } else {
-        const data = {};
-        for (let i = 0; i < cardData.length; i++) {
-          const currentRow = cardData.eq(i);
-          const header = currentRow.find('dt').text();
-          const value = currentRow.find('dd').text();
-          data[header] = value;
-          data["Grading Company"] = company;
-        }
-        setCardInfo(data);
-        setIsCardInfo(true);
-        setSearched((searched) => [...searched, data]);
+        return false;
       }
-    });
-  }
-
-  function fetchBGS() {
-    axios.get(`/api/proxy?company=${company}&certNum=${certNum}`)
-    .then((response) => {
-      const $ = load(response.data);
+    }
+    if (company === "BGS") {
       const alert = $('.recNotF');
       if (alert.length > 0) {
-        setIsCardInfo(false);
-      } else {
-        const cardData = $('.cardDetail').eq(0).find('tr');
-        const data = {};
-        data["Card Serial Number"] = certNum;
-        for (let i = 0; i < cardData.length; i++) {
-          const currentRow = cardData.eq(i);
-          const header = currentRow.find('b').text();
-          const value = currentRow.find('td').eq(2).text();
-          data[header] = value;
-          data["Grading Company"] = company;
-        }
-        setCardInfo(data);
-        setIsCardInfo(true);
-        setSearched((searched) => [...searched, data]);
+        return false;
       }
-    });
+    }
+    return true;
   }
 
-  function fetchInfo() {
+  function parseCardInfo(response, company) {
+    const $ = load(response.data);
+    const data = {};
     if (company === "PSA") {
-      fetchPSA();
-    } else if (company === "CGC") {
-      fetchCGC();
-    } else {
-      fetchBGS();
+      const cardData = $('tr');
+      for (let i = 0; i < cardData.length; i++) {
+        const currentRow = cardData.eq(i);
+        const header = currentRow.find('th').text();
+        const value = currentRow.find('td').text();
+        data[header] = value;
+      }
     }
+    if (company === "CGC") {
+      const cardData = $('dl');
+      for (let i = 0; i < cardData.length; i++) {
+        const currentRow = cardData.eq(i);
+        const header = currentRow.find('dt').text();
+        const value = currentRow.find('dd').text();
+        data[header] = value;
+      }
+    }
+    if (company === "BGS") {
+      const cardData = $('.cardDetail').eq(0).find('tr');
+      data["Card Serial Number"] = certNum;
+      for (let i = 0; i < cardData.length; i++) {
+        const currentRow = cardData.eq(i);
+        const header = currentRow.find('b').text();
+        const value = currentRow.find('td').eq(2).text();
+        data[header] = value;
+      }
+    }
+    data["Grading Company"] = company;
+    return data;
   }
 
   function handleChange(e) {
@@ -148,7 +138,7 @@ export default function Home() {
               onChange={handleChange}
             />
           </form>
-          <button className="btn btn-primary" onClick={fetchInfo}>Click Me!</button>
+          <button className="btn btn-primary" onClick={fetchCardInfo}>Click Me!</button>
         </div>
         {cardContent}
         <Table company={company} searched={searched} />
