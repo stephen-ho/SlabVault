@@ -7,6 +7,7 @@ import { load } from "cheerio";
 import { useEffect, useState } from "react";
 import CardInfo from "./CardInfo";
 import Table from "./Table";
+import { validatePSA, parsePSA } from "./PSA";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -47,13 +48,10 @@ export default function Home() {
   function validateResponse(response, company) {
     const $ = load(response.data);
     if (company === "PSA") {
-      const alert = $('.glyphicon-alert');
-      if (alert.length > 0) {
-        return false;
-      }
+      return validatePSA(response);
     }
     if (company === "CGC") {
-    const cardData = $('dl');
+      const cardData = $('dl');
       if (cardData.length === 0) {
         return false;
       }
@@ -64,20 +62,14 @@ export default function Home() {
         return false;
       }
     }
-    return true;
+    return false;
   }
 
   function parseCardInfo(response, company) {
     const $ = load(response.data);
-    const data = {};
+    // const data = {};
     if (company === "PSA") {
-      const cardData = $('tr');
-      for (let i = 0; i < cardData.length; i++) {
-        const currentRow = cardData.eq(i);
-        const header = currentRow.find('th').text();
-        const value = currentRow.find('td').text();
-        data[header] = value;
-      }
+      return parsePSA(response, company);
     }
     if (company === "CGC") {
       const cardData = $('dl');
@@ -98,8 +90,8 @@ export default function Home() {
         data[header] = value;
       }
     }
-    data["Grading Company"] = company;
-    return data;
+    // data["Grading Company"] = company;
+    // return data;
   }
 
   function handleChange(e) {
