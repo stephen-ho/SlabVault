@@ -9,6 +9,7 @@ import CardInfo from "./CardInfo";
 import Table from "./Table";
 import { validatePSA, parsePSA } from "./PSA";
 import { validateCGC, parseCGC } from "./CGC";
+import { validateBGS, parseBGS } from "./BGS";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,7 +40,7 @@ export default function Home() {
       setIsCardInfo(isValid);
 
       if (isValid) {
-        const data = parseCardInfo(response, company);
+        const data = parseCardInfo(response, company, certNum);
         setCardInfo(data);
         setSearched((searched) => [...searched, data]);
       }
@@ -47,54 +48,28 @@ export default function Home() {
   }
 
   function validateResponse(response, company) {
-    const $ = load(response.data);
     if (company === "PSA") {
       return validatePSA(response);
     }
     if (company === "CGC") {
-      // const cardData = $('dl');
-      // if (cardData.length === 0) {
-      //   return false;
-      // }
       return validateCGC(response);
     }
     if (company === "BGS") {
-      const alert = $('.recNotF');
-      if (alert.length > 0) {
-        return false;
-      }
+      return validateBGS(response);
     }
     return false;
   }
 
-  function parseCardInfo(response, company) {
-    const $ = load(response.data);
-    // const data = {};
+  function parseCardInfo(response, company, certNum) {
     if (company === "PSA") {
       return parsePSA(response, company);
     }
     if (company === "CGC") {
-      // const cardData = $('dl');
-      // for (let i = 0; i < cardData.length; i++) {
-      //   const currentRow = cardData.eq(i);
-      //   const header = currentRow.find('dt').text();
-      //   const value = currentRow.find('dd').text();
-      //   data[header] = value;
-      // }
       return parseCGC(response, company);
     }
     if (company === "BGS") {
-      const cardData = $('.cardDetail').eq(0).find('tr');
-      data["Card Serial Number"] = certNum;
-      for (let i = 0; i < cardData.length; i++) {
-        const currentRow = cardData.eq(i);
-        const header = currentRow.find('b').text();
-        const value = currentRow.find('td').eq(2).text();
-        data[header] = value;
-      }
+      return parseBGS(response, company, certNum);
     }
-    // data["Grading Company"] = company;
-    // return data;
   }
 
   function handleChange(e) {
