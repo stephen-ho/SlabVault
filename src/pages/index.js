@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import CardInfo from "./CardInfo";
 import Table from "./Table";
 import { validatePSA, parsePSA } from "./PSA";
+import { validateCGC, parseCGC } from "./CGC";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -51,10 +52,11 @@ export default function Home() {
       return validatePSA(response);
     }
     if (company === "CGC") {
-      const cardData = $('dl');
-      if (cardData.length === 0) {
-        return false;
-      }
+      // const cardData = $('dl');
+      // if (cardData.length === 0) {
+      //   return false;
+      // }
+      return validateCGC(response);
     }
     if (company === "BGS") {
       const alert = $('.recNotF');
@@ -72,13 +74,14 @@ export default function Home() {
       return parsePSA(response, company);
     }
     if (company === "CGC") {
-      const cardData = $('dl');
-      for (let i = 0; i < cardData.length; i++) {
-        const currentRow = cardData.eq(i);
-        const header = currentRow.find('dt').text();
-        const value = currentRow.find('dd').text();
-        data[header] = value;
-      }
+      // const cardData = $('dl');
+      // for (let i = 0; i < cardData.length; i++) {
+      //   const currentRow = cardData.eq(i);
+      //   const header = currentRow.find('dt').text();
+      //   const value = currentRow.find('dd').text();
+      //   data[header] = value;
+      // }
+      return parseCGC(response, company);
     }
     if (company === "BGS") {
       const cardData = $('.cardDetail').eq(0).find('tr');
